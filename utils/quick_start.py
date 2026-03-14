@@ -50,7 +50,13 @@ def quick_start(model, dataset, config_dict, save_model=True):
     if "seed" not in config['hyper_parameters']:
         config['hyper_parameters'] = ['seed'] + config['hyper_parameters']
     for i in config['hyper_parameters']:
-        hyper_ls.append(config[i] or [None])
+        val = config[i]
+        if val is None:
+            hyper_ls.append([None])
+        elif not isinstance(val, list):
+            hyper_ls.append([val])
+        else:
+            hyper_ls.append(val)
     # combinations
     combinators = list(product(*hyper_ls))
     total_loops = len(combinators)
